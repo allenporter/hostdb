@@ -71,7 +71,7 @@ class HostDb:
         return self._service_groups
 
 
-def _validate(hosts: dict[str, Any], services: dict[str, str]):
+def validate_raw(hosts: dict[str, Any], services: dict[str, str]):
     ips = {}
     macs = {}
     for (host, config) in hosts.items():
@@ -99,7 +99,7 @@ def _validate(hosts: dict[str, Any], services: dict[str, str]):
 
 def validate(db: HostDb) -> None:
     """Validate the specified host database."""
-    _validate(db.hosts, db.services)
+    validate_raw(db.hosts, db.services)
 
 
 def build_hostname_set() -> dict[str, str]:

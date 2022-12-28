@@ -1,92 +1,87 @@
-#!/usr/bin/python3
+"""Test for the hostname validation logic."""
 
-import unittest
-import hostdb
+import pytest
+from hostdb.hostdb import validate_raw, HostDbConfigError
 
-class TestSum(unittest.TestCase):
 
-  def test_success(self):
+def test_success() -> None:
     hosts = {
-      'host1': {
-        'ip': '127.0.0.1',
-        'mac': '00:aa:bb:cc:dd:ee',
-      },
-      'host2': {
-        'ip': '127.0.0.2',
-        'mac': 'bb:aa:bb:cc:dd:ee',
-      },
-      'host3': {
-        'ip': '127.0.0.3',
-        'mac': 'ee:aa:bb:cc:dd:ee',
-      },
+        'host1': {
+            'ip': '127.0.0.1',
+            'mac': '00:aa:bb:cc:dd:ee',
+         },
+         'host2': {
+            'ip': '127.0.0.2',
+            'mac': 'bb:aa:bb:cc:dd:ee',
+         },
+         'host3': {
+            'ip': '127.0.0.3',
+            'mac': 'ee:aa:bb:cc:dd:ee',
+         },
     }
     services = {
-      'web01': 'host1',
-      'sto01': 'host2',
+        'web01': 'host1',
+        'sto01': 'host2',
     }
 
-    hostdb.hostdb.validate_hostdb(hosts, services)
+    validate_raw(hosts, services)
 
-  def test_duplicate_ip(self):
+def test_duplicate_ip():
     hosts = {
-      'host1': {
-        'ip': '127.0.0.1',
-        'mac': '00:aa:bb:cc:dd:ee',
-      },
-      'host2': {
-        'ip': '127.0.0.1',
-        'mac': 'bb:aa:bb:cc:dd:ee',
-      },
-      'host3': {
-        'ip': '127.0.0.3',
-        'mac': 'ee:aa:bb:cc:dd:ee',
-      },
+        'host1': {
+            'ip': '127.0.0.1',
+            'mac': '00:aa:bb:cc:dd:ee',
+        },
+        'host2': {
+            'ip': '127.0.0.1',
+            'mac': 'bb:aa:bb:cc:dd:ee',
+        },
+        'host3': {
+            'ip': '127.0.0.3',
+            'mac': 'ee:aa:bb:cc:dd:ee',
+        },
     }
     services = {
-      'web01': 'host1',
-      'sto01': 'host2',
+        'web01': 'host1',
+        'sto01': 'host2',
     }
 
-    with self.assertRaises(validate_hostdb.ConfigError):
-      validate_hostdb.Validate(hosts, services)
+    with pytest.raises(HostDbConfigError):
+        validate_raw(hosts, services)
 
-  def test_duplicate_mac(self):
+def test_duplicate_mac() -> None:
     hosts = {
-      'host1': {
-        'ip': '127.0.0.1',
-        'mac': '00:aa:bb:cc:dd:ee',
-      },
-      'host2': {
-        'ip': '127.0.0.2',
-        'mac': 'ee:aa:bb:cc:dd:ee',
-      },
-      'host3': {
-        'ip': '127.0.0.3',
-        'mac': 'ee:aa:bb:cc:dd:ee',
-      },
+        'host1': {
+            'ip': '127.0.0.1',
+            'mac': '00:aa:bb:cc:dd:ee',
+        },
+        'host2': {
+            'ip': '127.0.0.2',
+            'mac': 'ee:aa:bb:cc:dd:ee',
+        },
+        'host3': {
+            'ip': '127.0.0.3',
+            'mac': 'ee:aa:bb:cc:dd:ee',
+        },
     }
     services = {
-      'web01': 'host1',
-      'sto01': 'host2',
+        'web01': 'host1',
+        'sto01': 'host2',
     }
 
-    with self.assertRaises(validate_hostdb.ConfigError):
-      validate_hostdb.Validate(hosts, services)
+    with pytest.raises(HostDbConfigError):
+        validate_raw(hosts, services)
 
-  def test_no_service(self):
+def test_no_service() -> None:
     hosts = {
-      'host1': {
-        'ip': '127.0.0.1',
-        'mac': '00:aa:bb:cc:dd:ee',
-      },
+        'host1': {
+            'ip': '127.0.0.1',
+            'mac': '00:aa:bb:cc:dd:ee',
+        },
     }
     services = {
-      'web01': 'host99',
+        'web01': 'host99',
     }
 
-    with self.assertRaises(validate_hostdb.ConfigError):
-      validate_hostdb.Validate(hosts, services)
-
-
-if __name__ == "__main__":
-  unittest.main()
+    with pytest.raises(HostDbConfigError):
+        validate_raw(hosts, services)
