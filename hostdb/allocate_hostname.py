@@ -19,7 +19,7 @@ HOSTDB_DIRS = ["hosts/prod", "hosts/dev"]
 
 def main():
     args = parser.parse_args()
-    dbs = [hostdb.HostDb(path) for path in HOSTDB_DIRS]
+    dbs = [hostdb.HostDb.FromTerraform(path) for path in HOSTDB_DIRS]
     new_hosts = hostdb.allocate_hostnames(dbs, args.num)
     for host in new_hosts:
         print(host)

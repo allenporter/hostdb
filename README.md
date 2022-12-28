@@ -139,6 +139,8 @@ has not already been allocated. Run the command and it shows you 5 choices to pi
 so you don't get stuck with a name you don't like. The rest of the names are thrown back
 into the pool.
 
+This assumes the terraform paths are `hosts/{dev,prod}/`
+
 ```shell
 $ allocate_hostname
 natural
@@ -150,9 +152,11 @@ urban
 
 ## Validation
 
-You can verify your inventory and hostdb are working by validating the db:
+You can verify your inventory and hostdb are working by validating the db. Point it at your
+terraform directory to confirm the structure is as expected:
+
 ```shell
-$ validate_hostdb
+$ validate_hostdb hosts/prod
 Success
 ```
 
