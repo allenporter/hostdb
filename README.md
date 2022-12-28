@@ -2,7 +2,7 @@
 
 This is an ansible plugin library that provides custom functionality to use terraform
 as inventory in ansible playbooks. This also helps with terraform machine management
-to define machines using a propper naming scheme. The original intended use case was
+to define machines using a proper naming scheme. The original intended use case was
 for proxmox VMs, though can be used with other terraform providers.
 
 ## Details
