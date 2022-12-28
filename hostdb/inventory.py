@@ -1,4 +1,4 @@
-"""An ansible inventory module based on hostdb backed by terraform.
+"""An ansible inventory module based on hostdb backed by hostdb.
 
 This has some custom helpers for building etcd inventory.
 """
@@ -12,14 +12,14 @@ from ansible.errors import AnsibleParserError
 from ansible.plugins.inventory import BaseInventoryPlugin
 
 DOCUMENTATION = r"""
-  name: terraform
+  name: hostdb
   plugin_type: inventory
-  short_description: Generates ansible inventory from terraform state
+  short_description: Generates ansible inventory from hostdb state
   options:
     plugin:
       description: Name of the plugin
       required: true
-      choices: ['terraform']
+      choices: ['hostdb']
     env:
       description: Environment used for separation and naming
       required: true
@@ -29,31 +29,31 @@ DOCUMENTATION = r"""
 class InventoryModule(BaseInventoryPlugin):
     """Inventory module for host db."""
 
-    NAME = "terraform"
+    NAME = "hostdb"
 
     def verify_file(self, path):
         """return true/false if this is possibly a valid file for this plugin to consume"""
-        if super(InventoryModule, self).verify_file(path):
+        if super().verify_file(path):
             path_dir = os.path.dirname(path)
             main_tf = "%s/main.tf" % (path_dir)
-            if not os.path.exists(main_tf):
-                return False
-        return True
+            if os.path.exists(main_tf):
+                return True
+        return False
 
     def parse(self, inventory, loader, path, cache=True):
-        super(InventoryModule, self).parse(inventory, loader, path, cache)
+        super().parse(inventory, loader, path, cache)
+
         self._read_config_data(path)
         try:
-            # Store the options from the YAML file
             self._env = self.get_option("env")
         except Exception as e:
-            raise AnsibleParserError("All correct options required: {}".format(e))
+            raise AnsibleParserError(f"Unable to read 'env' option from inventory: {str(e)}") from e
 
         inv_path = os.path.dirname(path)
         t = python_terraform.Terraform(working_dir=inv_path)
         return_code, stdout, stderr = t.show("-json")
         if return_code != 0:
-            raise Exception("Could not run terraform: %s", stderr)
+            raise Exception("Could not run hostdb: %s", stderr)
         cfg = json.loads(stdout)
         outputs = cfg["values"]["outputs"]
         all_hosts = outputs["hosts"]["value"]
