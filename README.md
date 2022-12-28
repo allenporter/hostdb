@@ -106,10 +106,37 @@ env: dev
 
 You can then use the service prefixes as inventory groups e.g. `cfg` or `mon` in the above examples.
 
+## Provisioning
+
+When provisioning a new host, you need to pick a new host name then add it to terraform
+and deploy the machine using your method of choice (e.g. proxmox terraform provider).
+The `allocate_hostname` tool can help you pick an available name from the wordlist that
+has not already been allocated. Run the command and it shows you 5 choices to pick from
+so you don't get stuck with a name you don't like. The rest of the names are thrown back
+into the pool.
+
+```shell
+$ allocate_hostname
+natural
+almanac
+panther
+monkey
+urban
+```
+
+## Validation
+
+You can verify your inventory and hostdb are working by validating the db:
+```shell
+$ validate_hostdb
+Success
+```
+
 ## Development
 
 ```
 $ python3 -m venv venv
 $ source venv/bin/activate
 $ pip3 install -r requirements.txt
+$ py.test
 ```
