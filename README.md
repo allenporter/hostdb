@@ -49,6 +49,9 @@ output "services" {
 }
 ```
 
+The values above are examples from a real terraform module, but they would obviously be
+different based on your provider.
+
 An example of a `hosts` output looks something like the following:
 ```
 "blast": {
