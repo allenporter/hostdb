@@ -83,15 +83,21 @@ manage DNS for you.
 This assumes you have a repository setup with multiple terraform environments
 for `dev` and `prod`. Each environment has an inventory config file e.g. `hosts/prod/inventory.yaml`
 
-From `ansible.cfg` this is an example with a default prod inventory:
+You need to install `hostdb` using pip:
 ```
-[defaults]
-inventory_plugins = /path/to/python/site-packages
-inventory = hosts/prod/inventory.yaml
+$ pip install hostdb
 ```
 
-You can install hostdb with `pip install hostdb` and find out the path to site-packages
-that it is installed under with with `pip show hostdb`.
+Then make the hostdb module discoverable by ansible. Create a file `~/.ansible/plugins/inventory/hostdb.py` with the contents:
+```
+from hostdb.inventory import DOCUMENTATION, InventoryModule
+```
+
+Then tell ansible about the hostdb inventory plugin in `ansible.cfg`:
+```
+[inventory]
+enable_plugins = hostdb
+```
 
 These are examples of the prod and dev inventory config files. From `hosts/prod/inventory.yaml`:
 ```
@@ -105,6 +111,21 @@ From `hosts/dev/inventory.yaml`:
 ---
 plugin: hostdb.inventory
 env: dev
+```
+
+You can test the plugin with `ansible-inventory --list -i hosts/dev/inventory.yaml` and see
+the terraform output variables you have defined as part of the ansibile inventory:
+```
+$ ansible-inventory --list -i hosts/dev/inventory.yaml | head
+{
+    "_meta": {
+        "hostvars": {
+            "cfg01.dev": {
+                "ansible_python_interpreter": "/usr/bin/python3",
+                "control_plane": "true",
+                "cpus": "4",
+                "disable_offload_iface": "eth0",
+...
 ```
 
 You can then use the service prefixes as inventory groups e.g. `cfg` or `mon` in the above examples.
