@@ -11,7 +11,7 @@ parser.add_argument("hostdb_dir", help="Host database config directory")
 
 def main():
     args = parser.parse_args()
-    db = hostdb.HostDb(args.hostdb_dir)
+    db = hostdb.HostDb.FromTerraform(args.hostdb_dir)
     hostdb.validate(db)
     print("Success")
 

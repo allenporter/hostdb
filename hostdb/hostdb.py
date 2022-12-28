@@ -22,6 +22,8 @@ class HostDb:
 
     def __init__(self, cfg: dict[str, Any]):
         """Initialize HostDb."""
+        if "values" not in cfg:
+            raise HostDbException(f"Invalid hostdb configuration missing 'values': {cfg}")
         outputs = cfg["values"]["outputs"]
         all_hosts = outputs["hosts"]["value"]
         node_ids = outputs["node_ids"]["value"]
