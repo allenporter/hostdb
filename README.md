@@ -1,8 +1,9 @@
 # hostdb
 
-A library or module machine management using Terraform, Ansible. The primary use case
-of this is with the terraform proxmox provider, though it could work with any other
-terraform based provider that provisions machines.
+This is an ansible plugin library that provides custom functionality to use terraform
+as inventory in ansible playbooks. This also helps with terraform machine management
+to define machines using a proper naming scheme. The original intended use case was
+for proxmox VMs, though can be used with other terraform providers.
 
 ## Details
 
@@ -21,6 +22,9 @@ Machines are allocated following [A Proper Server Naming Scheme](https://mnx.io/
   - A site has a geograph e.g. `lax.example.com`
   - Every machine has one or more purposes (e.g. a service that it runs) and has a CNAME for each. Serial numbers are
     added to identify the service. e.g. `mon01.lax.example.com`
+
+Hostnames are allocated using a wordlist `hostdb/resources/wordlist` which are reasonably
+interesting names recommended from the naming scheme above.
 
 This is just a quick summary, but see the above article for more details.
 
@@ -67,6 +71,40 @@ prefixes used as the ansible inventory group.
 "mon01": "blast",
 "mon02": "exodus",
 ```
+
+I recommend using these with a terraform DNS provider to automatically
+manage DNS for you.
+
+## Ansible inventory
+
+This assumes you have a repository setup with multiple terraform environments
+for `dev` and `prod`. Each environment has an inventory config file e.g. `hosts/prod/inventory.yaml`
+
+From `ansible.cfg` this is an example with a default prod inventory:
+```
+[defaults]
+inventory_plugins = /path/to/python/site-packages
+inventory = hosts/prod/inventory.yaml
+```
+
+You can install hostdb with `pip install hostdb` and find out the path to site-packages
+that it is installed under with with `pip show hostdb`.
+
+These are examples of the prod and dev inventory config files. From `hosts/prod/inventory.yaml`:
+```
+---
+plugin: hostdb.inventory
+env: prod
+```
+
+From `hosts/dev/inventory.yaml`:
+```
+---
+plugin: hostdb.inventory
+env: dev
+```
+
+You can then use the service prefixes as inventory groups e.g. `cfg` or `mon` in the above examples.
 
 ## Development
 

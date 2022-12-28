@@ -1,4 +1,7 @@
-"""An ansible inventory module based on hostdb."""
+"""An ansible inventory module based on hostdb backed by terraform.
+
+This has some custom helpers for building etcd inventory.
+"""
 
 import json
 import os
@@ -24,6 +27,7 @@ DOCUMENTATION = r"""
 
 
 class InventoryModule(BaseInventoryPlugin):
+    """Inventory module for host db."""
 
     NAME = "terraform"
 
