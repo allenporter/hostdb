@@ -72,6 +72,9 @@ prefixes used as the ansible inventory group.
 "mon02": "exodus",
 ```
 
+I recommend using these with a terraform DNS provider to automatically
+manage DNS for you.
+
 ## Ansible inventory
 
 This assumes you have a repository setup with multiple terraform environments
@@ -100,6 +103,8 @@ From `hosts/dev/inventory.yaml`:
 plugin: hostdb.inventory
 env: dev
 ```
+
+You can then use the service prefixes as inventory groups e.g. `cfg` or `mon` in the above examples.
 
 ## Development
 
