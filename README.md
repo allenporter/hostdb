@@ -142,6 +142,7 @@ into the pool.
 This assumes the terraform paths are `hosts/{dev,prod}/`
 
 ```shell
+$ TERRAFORM_DIRS=/path/to/terraform
 $ allocate_hostname
 natural
 almanac
