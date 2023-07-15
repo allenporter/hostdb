@@ -16,7 +16,8 @@ parser.add_argument(
     "--num", type=int, default=5, help="Number of hostnames to allocate"
 )
 parser.add_argument(
-    "--terraform_dirs", type=str, nargs="+", help="Hostdb inventory directories")
+    "--terraform_dirs", type=str, nargs="+", help="Hostdb inventory directories"
+)
 
 TERRAFORM_DIRS = "TERRAFORM_DIRS"
 HOSTDB_DIRS = ["hosts/prod", "hosts/dev"]
@@ -30,9 +31,9 @@ def main():
     if args.terraform_dirs:
         dirs = args.terraform_dirs
     if not dirs:
-        print("Required environment variable TERRAFORM_DIRS or --terraform_dirs not set")
+        print("Required environment var TERRAFORM_DIRS or --terraform_dirs not set")
         sys.exit(1)
-        
+
     dbs = [hostdb.HostDb.FromTerraform(path) for path in dirs]
     new_hosts = hostdb.allocate_hostnames(dbs, args.num)
     for host in new_hosts:

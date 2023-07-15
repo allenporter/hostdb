@@ -23,13 +23,15 @@ class HostDb:
     def __init__(self, cfg: dict[str, Any]):
         """Initialize HostDb."""
         if "values" not in cfg:
-            raise HostDbException(f"Invalid hostdb configuration missing 'values': {cfg}")
+            raise HostDbException(
+                f"Invalid hostdb configuration missing 'values': {cfg}"
+            )
         outputs = cfg["values"]["outputs"]
         all_hosts = outputs["hosts"]["value"]
         node_ids = outputs["node_ids"]["value"]
         services = outputs["services"]["value"]
 
-        for (hostname, node_id) in node_ids.items():
+        for hostname, node_id in node_ids.items():
             if hostname not in all_hosts:
                 continue
             all_hosts[hostname]["node_id"] = node_id
@@ -37,7 +39,7 @@ class HostDb:
 
         self._services = services
         self._service_groups = {}
-        for (service, host) in services.items():
+        for service, host in services.items():
             match = re.match("([a-z|_|-]+)\\d+", service)
             if not match:
                 continue
@@ -76,7 +78,7 @@ class HostDb:
 def validate_raw(hosts: dict[str, Any], services: dict[str, str]):
     ips = {}
     macs = {}
-    for (host, config) in hosts.items():
+    for host, config in hosts.items():
         if "ip" in config:
             ip = config["ip"]
             if ip in ips:
@@ -92,7 +94,7 @@ def validate_raw(hosts: dict[str, Any], services: dict[str, str]):
                 )
             macs[mac] = host
 
-    for (service, host) in services.items():
+    for service, host in services.items():
         if host not in hosts:
             raise HostDbConfigError(
                 "Service '%s' host '%s' not found in hosts" % (service, host)

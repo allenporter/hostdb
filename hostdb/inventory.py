@@ -32,7 +32,7 @@ class InventoryModule(BaseInventoryPlugin):
     NAME = "hostdb"
 
     def verify_file(self, path):
-        """return true/false if this is possibly a valid file for this plugin to consume"""
+        """Return true/false if this is possibly a valid file for this plugin."""
         if super().verify_file(path):
             path_dir = os.path.dirname(path)
             main_tf = "%s/main.tf" % (path_dir)
@@ -47,7 +47,9 @@ class InventoryModule(BaseInventoryPlugin):
         try:
             self._env = self.get_option("env")
         except Exception as e:
-            raise AnsibleParserError(f"Unable to read 'env' option from inventory: {str(e)}") from e
+            raise AnsibleParserError(
+                f"Unable to read 'env' option from inventory: {str(e)}"
+            ) from e
 
         inv_path = os.path.dirname(path)
         t = python_terraform.Terraform(working_dir=inv_path)
@@ -60,7 +62,7 @@ class InventoryModule(BaseInventoryPlugin):
         node_ids = outputs["node_ids"]["value"]
         services = outputs["services"]["value"]
 
-        for (hostname, config) in all_hosts.items():
+        for hostname, config in all_hosts.items():
             # TODO(allen): Swap out "node_ip" with "ip" everywhere so this
             # block can be removed.
             if "ip" in config:
@@ -71,7 +73,7 @@ class InventoryModule(BaseInventoryPlugin):
 
         # Infer groups based on hostname prefix (e.g. "vmm01" => "vmm")
         service_groups = {}
-        for (service, host) in services.items():
+        for service, host in services.items():
             match = re.match(r"([a-z|_|-]+)\d+", service)
             if not match:
                 continue
@@ -82,7 +84,7 @@ class InventoryModule(BaseInventoryPlugin):
 
         etcd_cluster_string = self.compute_etcd_cluster_string(all_hosts)
 
-        for (group, group_config) in service_groups.items():
+        for group, group_config in service_groups.items():
             self.inventory.add_group(group)
             for srv_host in group_config.keys():
                 full_host = "%s.%s" % (srv_host, self._env)
@@ -91,7 +93,7 @@ class InventoryModule(BaseInventoryPlugin):
                 if hostname not in all_hosts:
                     raise Exception(f"Could not find host {hostname} in inventory")
                 host_config = all_hosts[hostname]
-                for (k, v) in host_config.items():
+                for k, v in host_config.items():
                     self.inventory.set_variable(full_host, k, v)
                 if etcd_cluster_string:
                     self.inventory.set_variable(
@@ -100,7 +102,7 @@ class InventoryModule(BaseInventoryPlugin):
 
     def compute_etcd_cluster_string(self, hosts):
         etcd_cluster = {}
-        for (hostname, config) in hosts.items():
+        for hostname, config in hosts.items():
             # compute the etcd cluster string
             if "etcd_name" not in config:
                 continue
