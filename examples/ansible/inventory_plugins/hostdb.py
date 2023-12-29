@@ -1,1 +1,1 @@
-from hostdb.inventory import DOCUMENTATION, InventoryModule  # ruff: disable=F401
+from hostdb.inventory import DOCUMENTATION, InventoryModule  # noqa: F401
