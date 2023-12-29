@@ -1,0 +1,8 @@
+---
+- name: First Playbook
+  gather_facts: false
+  hosts: all
+  tasks:
+    - name: Display the config
+      debug:
+        msg: "The hostname is {{ inventory_hostname }} / {{ manifest_host }}"

@@ -30,48 +30,48 @@ Machines are allocated following [A Proper Server Naming Scheme](https://mnx.io/
     we don't have to care about the hosts name in practice.
   - Every machine has one or more purposes (e.g. a service that it runs) and has
     a CNAME for each. Serial numbers are added to identify the service.
-    e.g. `mon01.lax.example.com`
+    e.g. `kapi01.lax.example.com`
 
 Hostnames are allocated using a wordlist `hostdb/resources/wordlist` which are reasonably
 interesting names recommended from the naming scheme above.
 
 This is just a quick summary, but see the above article for more details.
 
-# Database format
+# Manifest format
 
-This inventory module expects to have the following output variables in `outputs.tf`:
-
+Infrastructure is defined through a manifest in yaml:
 ```
-output "hosts" {
-  description = "All allocated hostnames (including retired)"
-  value = local.all_hosts
-}
+---
+domain: example.com
+site: lax
+name: Los Angeles
 
-output "node_ids" {
-  description = "A map of hosts to proxmox VM node ids"
-  value = module.vms.node_id
-}
+service_types:
+- rtr
+- mon
+- kapi
+- kube
 
-output "services" {
-  description = "Assignments for all services"
-  value = var.services
-}
-```
+hardware_labels:
+- nvidia_gpu
+- intel_gpu
+- edgeos
 
-The values above are examples from a real terraform module, but they would obviously be
-different based on your provider.
-
-An example of a `hosts` output looks something like the following:
-```
-"blast": {
-    "ip": "192.168.1.80",
-},
-"domino": {
-    "ip": "192.168.1.81",
-},
-"exodus": {
-    "ip": "192.168.1.82",
-},
+machines:
+- host: friend
+  desc: Router
+  ip: 192.168.1.1
+  mac: 00:11:22:33:44:55
+  services:
+  - rtr01
+- host: lagoon
+  desc: Kubernetes API server
+  ip: 192.168.1.10
+  mac: 00:11:22:33:44:56
+  services:
+  - kapi01
+# Retired machines
+- host: latin
 ```
 
 All parameters are included in the ansible inventory as host variables.
@@ -79,18 +79,15 @@ All parameters are included in the ansible inventory as host variables.
 The `services` output assigns machines to DNS names which are the same
 prefixes used as the ansible inventory group.
 ```
-"cfg01": "domino",
-"mon01": "blast",
-"mon02": "exodus",
+"rtr01": "friend",
+"kapi01": "lagoon",
 ```
 
-I recommend using these with a terraform DNS provider to automatically
-manage DNS for you.
+These can be used with a DNS provider.
 
 ## Ansible inventory
 
-This assumes you have a repository setup with multiple terraform environments
-for `dev` and `prod`. Each environment has an inventory config file e.g. `hosts/prod/inventory.yaml`
+This assumes you have a manifest configuration file e.g. `hosts/config.yaml`
 
 You need to install `hostdb` using pip:
 ```
@@ -108,21 +105,14 @@ Then tell ansible about the hostdb inventory plugin in `ansible.cfg`:
 enable_plugins = hostdb
 ```
 
-These are examples of the prod and dev inventory config files. From `hosts/prod/inventory.yaml`:
+These are examples of the prod and dev inventory config files. From `hosts/inventory.yaml`:
 ```
 ---
 plugin: hostdb.inventory
-env: prod
+hostdb_config: config.yaml
 ```
 
-From `hosts/dev/inventory.yaml`:
-```
----
-plugin: hostdb.inventory
-env: dev
-```
-
-You can test the plugin with `ansible-inventory --list -i hosts/dev/inventory.yaml` and see
+You can test the plugin with `ansible-inventory --list -i hosts/inventory.yaml` and see
 the terraform output variables you have defined as part of the ansibile inventory:
 ```
 $ ansible-inventory --list -i hosts/dev/inventory.yaml | head

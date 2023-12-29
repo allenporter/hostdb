@@ -55,7 +55,7 @@ class HostDb:
         return self._manifest
 
     @property
-    def hosts(self) -> list[Machine]:
+    def hosts(self) -> dict[str, Machine]:
         return self._hosts
 
     @property
