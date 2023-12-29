@@ -87,47 +87,9 @@ These can be used with a DNS provider.
 
 ## Ansible inventory
 
-This assumes you have a manifest configuration file e.g. `hosts/config.yaml`
+See examples/ansible/README.md for an example of how to use a manifest to drive
+an ansible inventory with an inventory plugin.
 
-You need to install `hostdb` using pip:
-```
-$ pip install hostdb
-```
-
-Then make the hostdb module discoverable by ansible. Create a file `~/.ansible/plugins/inventory/hostdb.py` with the contents:
-```
-from hostdb.inventory import DOCUMENTATION, InventoryModule
-```
-
-Then tell ansible about the hostdb inventory plugin in `ansible.cfg`:
-```
-[inventory]
-enable_plugins = hostdb
-```
-
-These are examples of the prod and dev inventory config files. From `hosts/inventory.yaml`:
-```
----
-plugin: hostdb.inventory
-hostdb_config: config.yaml
-```
-
-You can test the plugin with `ansible-inventory --list -i hosts/inventory.yaml` and see
-the terraform output variables you have defined as part of the ansibile inventory:
-```
-$ ansible-inventory --list -i hosts/dev/inventory.yaml | head
-{
-    "_meta": {
-        "hostvars": {
-            "cfg01.dev": {
-                "ansible_python_interpreter": "/usr/bin/python3",
-                "control_plane": "true",
-                "cpus": "4",
-                "disable_offload_iface": "eth0",
-...
-```
-
-You can then use the service prefixes as inventory groups e.g. `cfg` or `mon` in the above examples.
 
 ## Provisioning
 
