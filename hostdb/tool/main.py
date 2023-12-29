@@ -7,9 +7,7 @@
 from argparse import (
     ArgumentParser,
     _SubParsersAction as SubParsersAction,
-    BooleanOptionalAction,
 )
-import os
 import sys
 import pathlib
 import logging
@@ -36,14 +34,15 @@ class AllocateAction:
             "--num", type=int, default=5, help="Number of hostnames to allocate"
         )
         allocate_cmd.add_argument(
-            "--path", type=str, required=True, help="Hostdb inventory configuration file"
+            "--path",
+            type=str,
+            required=True,
+            help="Hostdb inventory configuration file",
         )
         allocate_cmd.set_defaults(cls=AllocateAction)
 
-    def run(self,
-            num: int,
-            path: str,
-            **kwargs: Any  # pylint: disable=unused-argument
+    def run(
+        self, num: int, path: str, **kwargs: Any  # pylint: disable=unused-argument
     ) -> None:
         """Run the allocate command."""
         db = hostdb.HostDb.from_yaml(pathlib.Path(path))
@@ -65,7 +64,10 @@ class ValidateAction:
             description="Validate hostdb configuration",
         )
         validate_cmd.add_argument(
-            "--path", type=str, required=True, help="Hostdb inventory configuration file"
+            "--path",
+            type=str,
+            required=True,
+            help="Hostdb inventory configuration file",
         )
         validate_cmd.set_defaults(cls=ValidateAction)
 
@@ -91,7 +93,6 @@ def _make_parser() -> ArgumentParser:
 
 
 def main():
-
     parser = _make_parser()
     args = parser.parse_args()
 
