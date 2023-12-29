@@ -2,13 +2,14 @@
 
 import pathlib
 
+import pytest
 
 from hostdb.hostdb import HostDb
 from hostdb.manifest import Manifest, Machine
+from hostdb.exceptions import HostDbException
 
-DIR = "."
-TESTDATA = pathlib.Path("tests/testdata/cluster")
-TESTDATA_FULL_PATH = pathlib.Path.cwd() / TESTDATA
+
+TESTDATA = pathlib.Path.cwd() / pathlib.Path("tests/testdata")
 
 
 def test_empty() -> None:
@@ -64,3 +65,15 @@ def test_cluster_config(fixed_seed) -> None:
 
     db = HostDb.from_yaml(TESTDATA / "config.yaml")
     assert list(db.hostnames) == ["friend", "lagoon", "latin"]
+
+
+def test_invalid_yaml() -> None:
+    """Exercises reading an invalid configuration file."""
+    with pytest.raises(HostDbException, match=r"did not find expected"):
+        HostDb.from_yaml(pathlib.Path.cwd() / "setup.cfg")
+
+
+def test_invalid_yaml() -> None:
+    """Exercises reading an invalid configuration file."""
+    with pytest.raises(HostDbException, match=r"Could not parse"):
+        HostDb.from_yaml(TESTDATA / "invalid_config.yaml")

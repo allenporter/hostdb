@@ -2,11 +2,13 @@
 
 import re
 import pathlib
+import yaml
 
 from mashumaro.codecs.yaml import yaml_decode
 
 from .manifest import Manifest, Machine, SERVICE_MATCH
 from .validation import validate_manifest
+from .exceptions import HostDbException
 
 
 class HostDb:
@@ -38,7 +40,12 @@ class HostDb:
     @classmethod
     def from_yaml(cls, config: pathlib.Path) -> "HostDb":
         """Initialize HostDB from a yaml string."""
-        manifest = yaml_decode(config.read_text(), Manifest)
+        try:
+            manifest = yaml_decode(config.read_text(), Manifest)
+        except yaml.parser.ParserError as err:
+            raise HostDbException(f"Could not parse {config}: {err}") from err
+        except ValueError as err:
+            raise HostDbException(f"Could not parse {config}: {err}") from err
         return HostDb(manifest)
 
     @property
