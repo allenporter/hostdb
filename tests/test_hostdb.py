@@ -67,13 +67,19 @@ def test_cluster_config(fixed_seed) -> None:
     assert list(db.hostnames) == ["friend", "lagoon", "latin"]
 
 
-def test_invalid_yaml() -> None:
+def test_not_yaml_format() -> None:
     """Exercises reading an invalid configuration file."""
     with pytest.raises(HostDbException, match=r"did not find expected"):
         HostDb.from_yaml(pathlib.Path.cwd() / "setup.cfg")
 
 
-def test_invalid_yaml() -> None:
+def test_yaml_list_not_dict() -> None:
     """Exercises reading an invalid configuration file."""
     with pytest.raises(HostDbException, match=r"Could not parse"):
         HostDb.from_yaml(TESTDATA / "invalid_config.yaml")
+
+
+def test_file_not_exists() -> None:
+    """Exercises reading an invalid configuration file."""
+    with pytest.raises(HostDbException, match=r"Could not read"):
+        HostDb.from_yaml(TESTDATA / "does-not-exist.yaml")

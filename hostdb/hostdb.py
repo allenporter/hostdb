@@ -42,6 +42,8 @@ class HostDb:
         """Initialize HostDB from a yaml string."""
         try:
             manifest = yaml_decode(config.read_text(), Manifest)
+        except FileNotFoundError as err:
+            raise HostDbException(f"Could not read {config}: {err}") from err
         except yaml.parser.ParserError as err:
             raise HostDbException(f"Could not parse {config}: {err}") from err
         except ValueError as err:
