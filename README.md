@@ -141,32 +141,28 @@ You can then use the service prefixes as inventory groups e.g. `cfg` or `mon` in
 
 ## Provisioning
 
-When provisioning a new host, you need to pick a new host name then add it to terraform
-and deploy the machine using your method of choice (e.g. proxmox terraform provider).
-The `allocate_hostname` tool can help you pick an available name from the wordlist that
+When provisioning a new host, you need to pick a new host name then add it to the
+manifest and deploy the machine using your method of choice (e.g. some IaC provider).
+The `allocate` command can help you pick an available name from the wordlist that
 has not already been allocated. Run the command and it shows you 5 choices to pick from
 so you don't get stuck with a name you don't like. The rest of the names are thrown back
 into the pool.
 
-This assumes the terraform paths are `hosts/{dev,prod}/`
-
 ```shell
-$ TERRAFORM_DIRS=/path/to/terraform
-$ allocate_hostname
-natural
-almanac
-panther
-monkey
-urban
+$ hostdb allocate --path tests/testdata/config.yaml
+ninja
+reptile
+warning
+subject
+llama
 ```
 
 ## Validation
 
-You can verify your inventory and hostdb are working by validating the db. Point it at your
-terraform directory to confirm the structure is as expected:
+You can verify your machine manifest is valid:
 
 ```shell
-$ validate_hostdb hosts/prod
+$ hostdb validate --path tests/testdata/config.yaml
 Success
 ```
 
