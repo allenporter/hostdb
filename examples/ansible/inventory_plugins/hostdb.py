@@ -1,1 +1,1 @@
-from hostdb.inventory import DOCUMENTATION, InventoryModule
+from hostdb.inventory import DOCUMENTATION, InventoryModule  # ruff: disable=F401
