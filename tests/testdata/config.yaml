@@ -1,0 +1,39 @@
+---
+domain: example.com
+site: lax
+name: Los Angeles
+
+service_types:
+- rtr
+- sto
+- wifi
+- kapi
+- kube
+
+hardware_labels:
+- nvidia_gpu
+- intel_gpu
+- edgeos
+
+machines:
+- host: friend
+  desc: Router
+  ip: 192.168.1.1
+  mac: 00:11:22:33:44:55
+  services:
+  - rtr01
+- host: lagoon
+  desc: Storage
+  ip: 192.168.1.10
+  mac: 00:11:22:33:44:56
+  services:
+  - sto01
+# Retired machines
+- host: latin
+
+network:
+- subnet: 192.168.1.0/24
+  gateway: 192.168.1.1
+  nameserver:
+  - 192.168.1.1
+  - 8.8.8.8
