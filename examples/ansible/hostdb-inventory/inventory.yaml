@@ -1,0 +1,3 @@
+---
+plugin: hostdb
+manifest: examples/manifest.yaml

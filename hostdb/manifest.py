@@ -36,6 +36,7 @@ class Manifest:
 
     domain: str | None = None
     site: str | None = None
+    env: str | None = None
     name: str | None = None
     service_types: list[str] = field(default_factory=list)
     hardware_labels: list[str] = field(default_factory=list)

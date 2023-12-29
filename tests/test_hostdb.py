@@ -8,7 +8,7 @@ from hostdb.hostdb import HostDb
 from hostdb.manifest import Manifest, Machine
 from hostdb.exceptions import HostDbException
 
-
+EXAMPLES = pathlib.Path.cwd() / pathlib.Path("examples")
 TESTDATA = pathlib.Path.cwd() / pathlib.Path("tests/testdata")
 
 
@@ -63,7 +63,7 @@ def test_hostnames_allocated(fixed_seed) -> None:
 def test_cluster_config(fixed_seed) -> None:
     """Exercises reading a cluster configuration file from disk."""
 
-    db = HostDb.from_yaml(TESTDATA / "config.yaml")
+    db = HostDb.from_yaml(EXAMPLES / "manifest.yaml")
     assert list(db.hostnames) == ["friend", "lagoon", "latin"]
 
 
