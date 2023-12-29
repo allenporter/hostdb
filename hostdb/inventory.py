@@ -4,9 +4,7 @@ This has some custom helpers for building etcd inventory.
 """
 
 import dataclasses
-import json
 import os
-import re
 import logging
 import pathlib
 
@@ -63,12 +61,16 @@ class InventoryModule(BaseInventoryPlugin):
         try:
             db = hostdb.HostDb.from_yaml(pathlib.Path(self._manifest))
         except exceptions.HostDbException as e:
-            raise AnsibleParserError(f"Unable to read hostdb manifest {self._manifest}: {str(e)}") from e
+            raise AnsibleParserError(
+                f"Unable to read hostdb manifest {self._manifest}: {str(e)}"
+            ) from e
 
         try:
             hostdb.validate(db)
         except exceptions.HostDbException as e:
-            raise AnsibleParserError(f"Invalid hostdb manifest {self._manifest}: {str(e)}") from e
+            raise AnsibleParserError(
+                f"Invalid hostdb manifest {self._manifest}: {str(e)}"
+            ) from e
 
         env = db.manifest.env
         for group, group_config in db.service_groups.items():
