@@ -42,20 +42,10 @@ This is just a quick summary, but see the above article for more details.
 Infrastructure is defined through a manifest in yaml:
 ```
 ---
-domain: example.com
-site: lax
-name: Los Angeles
-
-service_types:
-- rtr
-- mon
-- kapi
-- kube
-
-hardware_labels:
-- nvidia_gpu
-- intel_gpu
-- edgeos
+site:
+  domain: lax.example.com
+  name: Los Angeles
+  env: prod
 
 machines:
 - host: friend
