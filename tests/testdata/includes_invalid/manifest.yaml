@@ -1,8 +1,5 @@
 ---
-domain: example.com
-site: lax
-name: Los Angeles
-
+site: !include missing.yaml
 service_types: !include missing.yaml
 hardware_labels: !include missing.yaml
 machines: !include missing.yaml

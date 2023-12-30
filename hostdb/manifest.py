@@ -31,13 +31,19 @@ class Machine:
 
 
 @dataclass
+class Site:
+    """Site configuration."""
+
+    domain: str | None = None
+    desc: str | None = None
+    env: str | None = None
+
+
+@dataclass
 class Manifest:
     """Manifest configuration."""
 
-    domain: str | None = None
-    site: str | None = None
-    env: str | None = None
-    name: str | None = None
+    site: Site | None = None
     service_types: list[str] = field(default_factory=list)
     hardware_labels: list[str] = field(default_factory=list)
     machines: list[Machine] = field(default_factory=list)
