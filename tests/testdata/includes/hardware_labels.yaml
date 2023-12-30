@@ -1,0 +1,4 @@
+---
+- nvidia_gpu
+- intel_gpu
+- edgeos

@@ -4,11 +4,11 @@ import re
 import pathlib
 import yaml
 
-from mashumaro.codecs.yaml import yaml_decode
 
 from .manifest import Manifest, Machine, SERVICE_MATCH
 from .validation import validate_manifest
 from .exceptions import HostDbException
+from .yaml_loaders import yaml_decode
 
 
 class HostDb:
@@ -41,7 +41,10 @@ class HostDb:
     def from_yaml(cls, config: pathlib.Path) -> "HostDb":
         """Initialize HostDB from a yaml string."""
         try:
-            manifest = yaml_decode(config.read_text(), Manifest)
+            manifest = yaml_decode(
+                config.open(),
+                Manifest,
+            )
         except FileNotFoundError as err:
             raise HostDbException(f"Could not read {config}: {err}") from err
         except yaml.parser.ParserError as err:

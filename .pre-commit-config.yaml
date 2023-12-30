@@ -6,6 +6,8 @@ repos:
     exclude: 'tests/testdata/.*yaml$'
   - id: end-of-file-fixer
   - id: check-yaml
+    args:
+    - --unsafe  # Allow !include and other constructors
   - id: check-added-large-files
 - repo: https://github.com/charliermarsh/ruff-pre-commit
   rev: v0.1.9
