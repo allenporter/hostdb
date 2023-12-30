@@ -8,8 +8,12 @@ from hostdb.hostdb import HostDb
 from hostdb.manifest import Manifest, Machine
 from hostdb.exceptions import HostDbException
 
+
 EXAMPLES = pathlib.Path.cwd() / pathlib.Path("examples")
+EXAMPLE_CONFIG = EXAMPLES / "manifest.yaml"
 TESTDATA = pathlib.Path.cwd() / pathlib.Path("tests/testdata")
+INVALID_CONFIG = TESTDATA / "invalid/invalid_config.yaml"
+INCLUDES_CONFIG = TESTDATA / "includes/manifest.yaml"
 
 
 def test_empty() -> None:
@@ -63,8 +67,19 @@ def test_hostnames_allocated(fixed_seed) -> None:
 def test_cluster_config(fixed_seed) -> None:
     """Exercises reading a cluster configuration file from disk."""
 
-    db = HostDb.from_yaml(EXAMPLES / "manifest.yaml")
+    db = HostDb.from_yaml(EXAMPLE_CONFIG)
     assert list(db.hostnames) == ["friend", "lagoon", "latin"]
+
+
+def test_includes_config(fixed_seed) -> None:
+    """Exercises reading a cluster configuration file from disk."""
+
+    db = HostDb.from_yaml(INCLUDES_CONFIG)
+    assert list(db.hostnames) == ["friend", "lagoon", "latin"]
+    assert len(db.manifest.network) == 1
+    assert db.services == {"rtr01": "friend", "sto01": "lagoon"}
+    assert db.manifest.network[0].subnet == "192.168.1.0/24"
+    assert db.manifest.hardware_labels == ["nvidia_gpu", "intel_gpu", "edgeos"]
 
 
 def test_not_yaml_format() -> None:
@@ -76,7 +91,7 @@ def test_not_yaml_format() -> None:
 def test_yaml_list_not_dict() -> None:
     """Exercises reading an invalid configuration file."""
     with pytest.raises(HostDbException, match=r"Could not parse"):
-        HostDb.from_yaml(TESTDATA / "invalid_config.yaml")
+        HostDb.from_yaml(INVALID_CONFIG)
 
 
 def test_file_not_exists() -> None:

@@ -1,0 +1,15 @@
+---
+- host: friend
+  desc: Router
+  ip: 192.168.1.1
+  mac: 00:11:22:33:44:55
+  services:
+  - rtr01
+- host: lagoon
+  desc: Storage
+  ip: 192.168.1.10
+  mac: 00:11:22:33:44:56
+  services:
+  - sto01
+# Retired machines
+- host: latin
