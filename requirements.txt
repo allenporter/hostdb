@@ -1,6 +1,6 @@
 -e .
 black==23.12.1
 pytest==7.4.4
-ruff==0.1.13
+ruff==0.1.14
 pdoc==14.4.0
 pre-commit==3.6.0
