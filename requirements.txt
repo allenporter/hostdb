@@ -1,5 +1,5 @@
 -e .
-black==24.1.0
+black==24.1.1
 pytest==8.0.0
 ruff==0.1.14
 pdoc==14.4.0
