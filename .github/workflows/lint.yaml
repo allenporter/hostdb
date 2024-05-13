@@ -1,4 +1,5 @@
-name: CLI Test
+---
+name: Lint
 
 on:
   push:
@@ -13,13 +14,24 @@ env:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
 
     steps:
       - uses: actions/checkout@v4
+      - uses: chartboost/ruff-action@v1.0.0
+      - uses: codespell-project/actions-codespell@v2.0
+        with:
+          check_hidden: false
+          exclude_file: hostdb/resources/wordlist
+      - name: Run yamllint
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          file_or_dir: "./"
+          config_file: "./.yaml-lint.yaml"
+          strict: true
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -32,9 +44,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements_dev.txt
 
-      - name: Validate
+      - name: Static typing with mypy
         run: |
-          hostdb validate --path examples/manifest.yaml
-      - name: Allocate
-        run: |
-          hostdb allocate --path examples/manifest.yaml
+          mypy --install-types --non-interactive --no-warn-unused-ignores .
