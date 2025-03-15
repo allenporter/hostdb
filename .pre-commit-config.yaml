@@ -38,7 +38,7 @@ repos:
                 hostdb/resources/wordlist
             )$
   - repo: https://github.com/adrienverge/yamllint.git
-    rev: v1.36.0
+    rev: v1.36.1
     hooks:
       - id: yamllint
         exclude: '^tests/tool/testdata/.*\.yaml$'
