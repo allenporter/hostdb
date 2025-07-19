@@ -23,6 +23,9 @@ Source = "https://github.com/allenporter/hostdb"
 [tool.setuptools.packages.find]
 include = ["hostdb*"]
 
+[project.entry-points."console_scripts"]
+hostdb = "hostdb.tool.main:main"
+
 [tool.mypy]
 exclude = [
   "venv/",
