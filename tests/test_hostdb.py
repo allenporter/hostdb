@@ -75,7 +75,7 @@ def test_cluster_config(fixed_seed) -> None:
 def test_not_yaml_format() -> None:
     """Exercises reading an invalid configuration file."""
     with pytest.raises(HostDbException, match=r"did not find expected"):
-        HostDb.from_yaml(pathlib.Path.cwd() / "setup.cfg")
+        HostDb.from_yaml(pathlib.Path.cwd() / "README.md")
 
 
 def test_yaml_list_not_dict() -> None:

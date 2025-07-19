@@ -1,6 +1,30 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools>=77.0"]
+
+[project]
+name = "hostdb"
+version = "2.1.0"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+description = "Hostdb manages homelab hosts using infrastructure as code principles."
+readme = "README.md"
+authors = [{ name = "Allen Porter", email = "allen.porter@gmail.com" }]
+requires-python = ">=3.10"
+classifiers = []
+dependencies = [
+  "ansible>=7.1.0",
+  "mashumaro[yaml]>=3.11",
+]
+
+[project.urls]
+Source = "https://github.com/allenporter/hostdb"
+
+[tool.setuptools.packages.find]
+include = ["hostdb*"]
+
 [tool.mypy]
 exclude = [
-  "setup.py",
   "venv/",
   "examples/",
 ]
