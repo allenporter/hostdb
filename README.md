@@ -7,7 +7,7 @@ other network infrastructure in an inventory below the kubernetes cluster.
 ## Details
 
 This library started as a hybrid using terraform for machine management and
-exposting the terrafrom state as a dynamic ansible inventory plugin. The initial
+exposing the terrafrom state as a dynamic ansible inventory plugin. The initial
 use case was for managing VMs in proxmox as well as their DNS records, however
 given trouble around the proxmox API with breaking changes and lack of a stable
 terraform provider, there is a desire for something simpler and less intertwined
