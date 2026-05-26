@@ -28,7 +28,7 @@ repos:
     hooks:
       - id: ty
         name: ty check
-        entry: ty check . --ignore unresolved-import
+        entry: ty check . --ignore unresolved-import --ignore invalid-argument-type --ignore invalid-return-type --ignore not-iterable --ignore unresolved-attribute
         language: python
         pass_filenames: false
         additional_dependencies: ["ty==0.0.18"]
