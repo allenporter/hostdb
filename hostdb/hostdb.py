@@ -3,6 +3,7 @@
 import re
 import pathlib
 import yaml
+import yaml.parser
 
 
 from .manifest import Manifest, Machine, SERVICE_MATCH
