@@ -103,5 +103,7 @@ def test_includes_config() -> None:
 
 def test_include_invalid_file(fixed_seed) -> None:
     """Exercises reading a configuration file that includes a missing file."""
-    with pytest.raises(HostDbException, match=r"includes_invalid/missing.yaml' does not exist"):
+    with pytest.raises(
+        HostDbException, match=r"includes_invalid/missing.yaml' does not exist"
+    ):
         HostDb.from_yaml(INCLUDES_INVALID_CONFIG)

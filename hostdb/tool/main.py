@@ -23,7 +23,8 @@ class AllocateAction:
 
     @classmethod
     def register(
-        cls, subparsers: SubParsersAction  # type: ignore[type-arg]
+        cls,
+        subparsers: SubParsersAction,  # type: ignore[type-arg]
     ) -> ArgumentParser:
         allocate_cmd = subparsers.add_parser(
             "allocate",
@@ -42,7 +43,10 @@ class AllocateAction:
         allocate_cmd.set_defaults(cls=AllocateAction)
 
     def run(
-        self, num: int, path: str, **kwargs: Any  # pylint: disable=unused-argument
+        self,
+        num: int,
+        path: str,
+        **kwargs: Any,  # pylint: disable=unused-argument
     ) -> None:
         """Run the allocate command."""
         db = hostdb.HostDb.from_yaml(pathlib.Path(path))
@@ -56,7 +60,8 @@ class ValidateAction:
 
     @classmethod
     def register(
-        cls, subparsers: SubParsersAction  # type: ignore[type-arg]
+        cls,
+        subparsers: SubParsersAction,  # type: ignore[type-arg]
     ) -> ArgumentParser:
         validate_cmd = subparsers.add_parser(
             "validate",
