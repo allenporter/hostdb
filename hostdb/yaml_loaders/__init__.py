@@ -13,7 +13,7 @@ _DEFAULT_LOADER = getattr(yaml, "CSafeLoader", yaml.SafeLoader)
 
 class FastSafeLoader(_DEFAULT_LOADER):
     """The fastest available safe loader, either C or Python.
-    
+
     This exists to support capturing the stream file name in the same way as the
     python yaml loader in order to support !include tags.
     """
@@ -40,7 +40,7 @@ def _default_decoder(stream: Any) -> Any:
 
 def yaml_decode(stream: Any, shape_type: Type[T] | Any) -> T:
     """Decode a YAML document using the custom tag constructors.
-    
+
     This function is comparable to the mashumaro.codecs.yaml.yaml_decode function,
     but accepts a stream rather than content string in order to implement
     custom tags based on the current filename.
