@@ -2,9 +2,8 @@
 
 import re
 
-
 from .exceptions import HostDbConfigError
-from .manifest import Manifest, SERVICE_MATCH
+from .manifest import SERVICE_MATCH, Manifest
 
 
 def validate_manifest(manifest: Manifest) -> None:
@@ -15,40 +14,37 @@ def validate_manifest(manifest: Manifest) -> None:
 
     service_types = set(manifest.service_types)
     if len(service_types) != len(manifest.service_types):
-        raise HostDbConfigError("Duplicate service types: %s" % manifest.service_types)
+        raise HostDbConfigError(f"Duplicate service types: {manifest.service_types}")
 
     hardware_labels = set(manifest.hardware_labels)
     if len(hardware_labels) != len(manifest.hardware_labels):
         raise HostDbConfigError(
-            "Duplicate hardware labels: %s" % manifest.hardware_labels
+            f"Duplicate hardware labels: {manifest.hardware_labels}"
         )
 
     for machine in manifest.machines:
         if host := machine.host:
             if host in hosts:
                 raise HostDbConfigError(
-                    "Duplicate host '%s' for '%s' and '%s'"
-                    % (host, hosts[host], machine)
+                    f"Duplicate host '{host}' for '{hosts[host]}' and '{machine}'"
                 )
             hosts[host] = machine
         if ip := machine.ip:
             if ip in ips:
                 raise HostDbConfigError(
-                    "Duplicate IP for '%s' and '%s': %s" % (ips[ip], machine.host, ip)
+                    f"Duplicate IP for '{ips[ip]}' and '{machine.host}': {ip}"
                 )
             ips[ip] = machine.host
         if mac := machine.mac:
             if mac in macs:
                 raise HostDbConfigError(
-                    "Duplicate MAC for '%s' and '%s': %s"
-                    % (macs[mac], machine.host, mac)
+                    f"Duplicate MAC for '{macs[mac]}' and '{machine.host}': {mac}"
                 )
             macs[mac] = machine.host
         for service in machine.services:
             if service in services:
                 raise HostDbConfigError(
-                    "Duplicate service '%s' for '%s' and '%s'"
-                    % (service, services[service], machine.host)
+                    f"Duplicate service '{service}' for '{services[service]}' and '{machine.host}'"
                 )
             services[service] = machine.host
 
@@ -58,12 +54,10 @@ def validate_manifest(manifest: Manifest) -> None:
             func = match.group(1)
             if func not in service_types:
                 raise HostDbConfigError(
-                    "Service type '%s' for '%s' not defined in service_types: %s"
-                    % (func, machine.host, manifest.service_types)
+                    f"Service type '{func}' for '{machine.host}' not defined in service_types: {manifest.service_types}"
                 )
         for label in machine.hardware_labels:
             if label not in hardware_labels:
                 raise HostDbConfigError(
-                    "Hardware label '%s' for '%s' not defined in hardware_labels: %s"
-                    % (label, machine.host, manifest.hardware_labels)
+                    f"Hardware label '{label}' for '{machine.host}' not defined in hardware_labels: {manifest.hardware_labels}"
                 )

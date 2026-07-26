@@ -4,14 +4,14 @@ This has some custom helpers for building etcd inventory.
 """
 
 import dataclasses
-import os
 import logging
+import os
 import pathlib
 
 from ansible.errors import AnsibleParserError
 from ansible.plugins.inventory import BaseInventoryPlugin
 
-from . import hostdb, exceptions
+from . import exceptions, hostdb
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -38,13 +38,13 @@ class InventoryModule(BaseInventoryPlugin):
 
     def verify_file(self, path):
         """Return true/false if this is possibly a valid file for this plugin."""
-        self.display.vvv("Verifying %s is a valid hostdb inventory file" % path)
+        self.display.vvv(f"Verifying {path} is a valid hostdb inventory file")
         if super().verify_file(path):
             if os.path.isdir(path):
                 return True
             if any(path.endswith(x) for x in [".yaml", ".yml"]):
                 return True
-        self.display.vvv("Inventory file '%s' is not valid for hostdb" % path)
+        self.display.vvv(f"Inventory file '{path}' is not valid for hostdb")
         return False
 
     def parse(self, inventory, loader, path, cache=True):
@@ -55,21 +55,21 @@ class InventoryModule(BaseInventoryPlugin):
             self._manifest = self.get_option("manifest")
         except Exception as e:
             raise AnsibleParserError(
-                f"Unable to read 'manifest' option from inventory: {str(e)}"
+                f"Unable to read 'manifest' option from inventory: {e!s}"
             ) from e
 
         try:
             db = hostdb.HostDb.from_yaml(pathlib.Path(self._manifest))
         except exceptions.HostDbException as e:
             raise AnsibleParserError(
-                f"Unable to read hostdb manifest {self._manifest}: {str(e)}"
+                f"Unable to read hostdb manifest {self._manifest}: {e!s}"
             ) from e
 
         try:
             hostdb.validate(db)
         except exceptions.HostDbException as e:
             raise AnsibleParserError(
-                f"Invalid hostdb manifest {self._manifest}: {str(e)}"
+                f"Invalid hostdb manifest {self._manifest}: {e!s}"
             ) from e
 
         env = db.manifest.env
@@ -77,7 +77,7 @@ class InventoryModule(BaseInventoryPlugin):
             self.inventory.add_group(group)
             for srv_host, host in group_config.items():
                 if env:
-                    full_host = "%s.%s" % (srv_host, env)
+                    full_host = f"{srv_host}.{env}"
                 else:
                     full_host = srv_host
                 self.inventory.add_host(host=full_host, group=group)

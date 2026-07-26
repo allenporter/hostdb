@@ -1,6 +1,6 @@
 {
   "template": "http://github.com/allenporter/cookiecutter-python",
-  "commit": "3dead0730b2e3934ecc9afc914de709911c4b745",
+  "commit": "5c5d6228c64ee74fda9a7f678d24ab6018250d0d",
   "checkout": null,
   "context": {
     "cookiecutter": {
@@ -10,8 +10,7 @@
       "project_name": "hostdb",
       "description": "Hostdb manages homelab hosts using infrastructure as code principles.",
       "version": "2.0.0",
-      "_template": "http://github.com/allenporter/cookiecutter-python",
-      "_commit": "3dead0730b2e3934ecc9afc914de709911c4b745"
+      "_template": "http://github.com/allenporter/cookiecutter-python"
     }
   },
   "directory": null
