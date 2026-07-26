@@ -55,21 +55,21 @@ class InventoryModule(BaseInventoryPlugin):
             self._manifest = self.get_option("manifest")
         except Exception as e:
             raise AnsibleParserError(
-                f"Unable to read 'manifest' option from inventory: {str(e)}"
+                f"Unable to read 'manifest' option from inventory: {e!s}"
             ) from e
 
         try:
             db = hostdb.HostDb.from_yaml(pathlib.Path(self._manifest))
         except exceptions.HostDbException as e:
             raise AnsibleParserError(
-                f"Unable to read hostdb manifest {self._manifest}: {str(e)}"
+                f"Unable to read hostdb manifest {self._manifest}: {e!s}"
             ) from e
 
         try:
             hostdb.validate(db)
         except exceptions.HostDbException as e:
             raise AnsibleParserError(
-                f"Invalid hostdb manifest {self._manifest}: {str(e)}"
+                f"Invalid hostdb manifest {self._manifest}: {e!s}"
             ) from e
 
         env = db.manifest.env

@@ -1,7 +1,7 @@
 """Initialize the yaml_loaders extensions."""
 
 from pathlib import Path
-from typing import Any, TypeVar, Type
+from typing import Any, TypeVar
 
 import yaml
 from mashumaro.codecs.yaml import YAMLDecoder
@@ -38,7 +38,7 @@ def _default_decoder(stream: Any) -> Any:
     return yaml.load(stream, Loader=FastSafeLoader)
 
 
-def yaml_decode(stream: Any, shape_type: Type[T] | Any) -> T:
+def yaml_decode(stream: Any, shape_type: type[T] | Any) -> T:
     """Decode a YAML document using the custom tag constructors.
 
     This function is comparable to the mashumaro.codecs.yaml.yaml_decode function,
@@ -62,10 +62,10 @@ def _include_tag_constructor(
         path = loader_path.parent / path
 
     if not path.exists():
-        raise FileNotFoundError(f"File '{path}' does not exist {str(node.start_mark)}")
+        raise FileNotFoundError(f"File '{path}' does not exist {node.start_mark!s}")
 
     if not path.is_file():
-        raise FileNotFoundError(f"File '{path}' is not a file {str(node.start_mark)}")
+        raise FileNotFoundError(f"File '{path}' is not a file {node.start_mark!s}")
 
     with path.open() as include_file:
         return yaml.load(include_file, Loader=FastSafeLoader)
