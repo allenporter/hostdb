@@ -4,14 +4,14 @@ This has some custom helpers for building etcd inventory.
 """
 
 import dataclasses
-import os
 import logging
+import os
 import pathlib
 
 from ansible.errors import AnsibleParserError
 from ansible.plugins.inventory import BaseInventoryPlugin
 
-from . import hostdb, exceptions
+from . import exceptions, hostdb
 
 _LOGGER = logging.getLogger(__name__)
 

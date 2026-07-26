@@ -4,14 +4,16 @@
 # hosts.  The tool prints out a new hostname that should be added to the
 # database.
 
+import logging
+import pathlib
+import sys
+import traceback
 from argparse import (
     ArgumentParser,
+)
+from argparse import (
     _SubParsersAction as SubParsersAction,
 )
-import sys
-import pathlib
-import logging
-import traceback
 from typing import Any
 
 from hostdb import hostdb, naming

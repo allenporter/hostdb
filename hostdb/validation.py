@@ -2,9 +2,8 @@
 
 import re
 
-
 from .exceptions import HostDbConfigError
-from .manifest import Manifest, SERVICE_MATCH
+from .manifest import SERVICE_MATCH, Manifest
 
 
 def validate_manifest(manifest: Manifest) -> None:
