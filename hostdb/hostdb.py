@@ -1,14 +1,14 @@
 """Library for reading the terraform database."""
 
-import pathlib
 import re
-
+import pathlib
 import yaml
 import yaml.parser
 
-from .exceptions import HostDbException
-from .manifest import SERVICE_MATCH, Machine, Manifest
+
+from .manifest import Manifest, Machine, SERVICE_MATCH
 from .validation import validate_manifest
+from .exceptions import HostDbException
 from .yaml_loaders import yaml_decode
 
 

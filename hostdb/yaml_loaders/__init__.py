@@ -38,7 +38,7 @@ def _default_decoder(stream: Any) -> Any:
     return yaml.load(stream, Loader=FastSafeLoader)
 
 
-def yaml_decode[T](stream: Any, shape_type: type[T] | Any) -> T:
+def yaml_decode(stream: Any, shape_type: type[T] | Any) -> T:
     """Decode a YAML document using the custom tag constructors.
 
     This function is comparable to the mashumaro.codecs.yaml.yaml_decode function,

@@ -3,10 +3,10 @@
 """
 
 __all__ = [
+    "manifest",
+    "tool",
     "exceptions",
     "hostdb",
-    "manifest",
-    "naming",
-    "tool",
     "validation",
+    "naming",
 ]

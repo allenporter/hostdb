@@ -4,9 +4,10 @@ import pathlib
 
 import pytest
 
-from hostdb.exceptions import HostDbException
 from hostdb.hostdb import HostDb
-from hostdb.manifest import Machine, Manifest
+from hostdb.manifest import Manifest, Machine
+from hostdb.exceptions import HostDbException
+
 
 EXAMPLES = pathlib.Path.cwd() / pathlib.Path("examples")
 EXAMPLE_CONFIG = EXAMPLES / "manifest.yaml"

@@ -23,11 +23,9 @@ def _build_hostname_set() -> dict[str, str]:
 
 
 def allocate_hostnames(
-    allocated: list[str], count: int, rand: random.Random | None = None
+    allocated: list[str], count: int, rand=random.Random()
 ) -> list[str]:
     """Produce the specified number of new hostnames that are not already allocated."""
-    if rand is None:
-        rand = random.Random()
     # Attempts to preserve order to facilitate testing with fixed random
     hostname_set = _build_hostname_set()
     for host in allocated:
