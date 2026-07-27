@@ -2,9 +2,9 @@
 
 import pytest
 
-from hostdb.validation import validate_manifest
 from hostdb.exceptions import HostDbConfigError
-from hostdb.manifest import Manifest, Machine
+from hostdb.manifest import Machine, Manifest
+from hostdb.validation import validate_manifest
 
 
 def test_success() -> None:
