@@ -28,10 +28,10 @@ repos:
     hooks:
       - id: ty
         name: ty check
-        entry: ty check . --ignore unresolved-import --ignore invalid-argument-type --ignore invalid-return-type --ignore not-iterable --ignore unresolved-attribute
+        entry: ty check . --ignore import-not-found --ignore invalid-argument-type --ignore invalid-return-type --ignore not-iterable --ignore unresolved-attribute
         language: python
         pass_filenames: false
-        additional_dependencies: ["ty==0.0.95"]
+        additional_dependencies: ["ty==0.0.99"]
   - repo: https://github.com/codespell-project/codespell
     rev: v2.4.3
     hooks:

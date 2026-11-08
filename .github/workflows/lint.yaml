@@ -53,4 +53,4 @@ jobs:
 
       - name: Static typing with ty
         run: |
-          ty check . --ignore unresolved-import --ignore invalid-argument-type --ignore invalid-return-type --ignore not-iterable --ignore unresolved-attribute
+          ty check . --ignore import-not-found --ignore invalid-argument-type --ignore invalid-return-type --ignore not-iterable --ignore unresolved-attribute
