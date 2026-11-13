@@ -31,7 +31,7 @@ repos:
         entry: ty check . --ignore import-not-found --ignore invalid-argument-type --ignore invalid-return-type --ignore not-iterable --ignore unresolved-attribute
         language: python
         pass_filenames: false
-        additional_dependencies: ["ty==0.0.99"]
+        additional_dependencies: ["ty==0.0.104"]
   - repo: https://github.com/codespell-project/codespell
     rev: v2.4.3
     hooks:
