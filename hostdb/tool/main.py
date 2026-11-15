@@ -43,6 +43,7 @@ class AllocateAction:
             help="Hostdb inventory configuration file",
         )
         allocate_cmd.set_defaults(cls=AllocateAction)
+        return allocate_cmd
 
     def run(
         self,
@@ -77,6 +78,7 @@ class ValidateAction:
             help="Hostdb inventory configuration file",
         )
         validate_cmd.set_defaults(cls=ValidateAction)
+        return validate_cmd
 
     def run(self, path: str, **kwargs: Any) -> None:
         """Run the validate command."""
