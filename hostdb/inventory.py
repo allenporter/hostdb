@@ -72,6 +72,7 @@ class InventoryModule(BaseInventoryPlugin):
                 f"Invalid hostdb manifest {self._manifest}: {e!s}"
             ) from e
 
+        assert self.inventory is not None
         env = db.manifest.env
         for group, group_config in db.service_groups.items():
             self.inventory.add_group(group)
